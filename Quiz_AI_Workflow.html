@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Kiểm Tra: Ứng Dụng AI Workflow</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; text-align: center; }
+        .header-box { text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        button { display: block; width: 100%; padding: 12px; background: #3498db; color: #fff; border: none; border-radius: 4px; font-size: 18px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #2980b9; }
+        button:disabled { background: #95a5a6; cursor: not-allowed; }
+        .question { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .question h3 { margin-bottom: 15px; font-size: 16px; color: #34495e; }
+        .option { display: block; margin-bottom: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+        .option:hover { background: #f1f1f1; }
+        .option input { margin-right: 10px; }
+        #quiz-container, #result-container { display: none; }
+        .result-box { text-align: center; padding: 30px; background: #e8f6f3; border-radius: 8px; border: 2px solid #1abc9c; }
+        .result-box h2 { color: #1abc9c; font-size: 28px; margin-bottom: 10px; }
+        .result-box p { font-size: 18px; }
+        .loading { text-align: center; font-style: italic; color: #7f8c8d; display: none; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Phần 1: Nhập thông tin -->
+    <div id="intro-container">
+        <div class="header-box">
+            <h1>Bài Kiểm Tra Cuối Khóa</h1>
+            <p>Chuyên đề: Ứng dụng AI Workflow cho Phòng Ban</p>
+        </div>
+        <div class="form-group">
+            <label for="student-name">Vui lòng nhập Họ và Tên của bạn để bắt đầu:</label>
+            <input type="text" id="student-name" placeholder="VD: Trần Đức Huy" required>
+        </div>
+        <button id="start-btn">Bắt Đầu Làm Bài</button>
+    </div>
+
+    <!-- Phần 2: Nội dung câu hỏi -->
+    <div id="quiz-container">
+        <h2>Phần Trắc Nghiệm (10 Câu)</h2>
+        <form id="quiz-form">
+            <!-- Các câu hỏi sẽ được load bằng JavaScript -->
+            <div id="questions-list"></div>
+            <button type="submit" id="submit-btn">Nộp Bài & Xem Điểm</button>
+            <div class="loading" id="loading-msg">Đang lưu kết quả của bạn... Vui lòng đợi!</div>
+        </form>
+    </div>
+
+    <!-- Phần 3: Kết quả -->
+    <div id="result-container">
+        <div class="result-box">
+            <h2>Hoàn Thành Xuất Sắc!</h2>
+            <p>Cảm ơn <strong id="display-name"></strong> đã hoàn thành bài kiểm tra.</p>
+            <p>Điểm số của bạn là: <strong id="display-score" style="font-size: 24px; color: #e74c3c;"></strong></p>
+            <p style="margin-top: 20px; font-size: 14px; color: #7f8c8d;">Kết quả của bạn đã được ghi nhận vào hệ thống.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 1. CẤU HÌNH GOOGLE SHEETS WEB APP URL
+    // ==========================================
+    // THAY THẾ ĐƯỜNG LINK DƯỚI ĐÂY BẰNG URL WEB APP CỦA BẠN (Xem hướng dẫn)
+    const GOOGLE_APP_SCRIPT_URL = "YOUR_WEB_APP_URL_HERE"; 
+    
+    // ==========================================
+    // 2. DỮ LIỆU CÂU HỎI
+    // ==========================================
+    const questions = [
+        {
+            q: "Câu 1: Theo mô hình giao việc cho AI, cấu trúc Prompt R-G-I-O viết tắt của những từ nào?",
+            options: ["A. Role - Goal - Input - Output", "B. Rule - Goal - Idea - Output", "C. Role - Guide - Input - Option", "D. Rule - Guide - Input - Output"],
+            ans: 0
+        },
+        {
+            q: "Câu 2: Trong phân tích dữ liệu với AI, đâu là nguyên tắc ĐÚNG khi xử lý điểm bất thường?",
+            options: ["A. AI tự động phát hiện và kết luận lỗi của đối tác.", "B. AI chỉ phát hiện nghi vấn (Inference), con người kiểm chứng và ra kết luận (Conclusion).", "C. Con người tự tìm dữ liệu, AI chỉ viết email.", "D. Dữ liệu (Fact) luôn luôn sai nếu AI báo lỗi."],
+            ans: 1
+        },
+        {
+            q: "Câu 3: Theo Framework đánh giá hợp đồng Logistics, 4 yếu tố nào cần được xem xét toàn diện thay vì chỉ nhìn vào 'Giá rẻ nhất'?",
+            options: ["A. Cost, Time, Cashflow, Quality", "B. Cost, Risk, Cashflow, Liability", "C. Price, Speed, Risk, Legal", "D. Price, Margin, Cashflow, Liability"],
+            ans: 1
+        },
+        {
+            q: "Câu 4: Việc yêu cầu Claude 'Trích xuất tất cả các điều khoản về chi phí thành một bảng gồm Hạng mục, Mức phí, Điều kiện' thuộc cấp độ khai thác tài liệu (Document Intelligence) nào?",
+            options: ["A. Level 1 - Summary (Tóm tắt)", "B. Level 2 - Extraction (Trích xuất)", "C. Level 3 - Analysis (Phân tích)", "D. Level 4 - Prediction (Dự đoán)"],
+            ans: 1
+        },
+        {
+            q: "Câu 5: Cấu trúc I-P-R-O dùng để đóng gói một Custom Skill bao gồm những thành phần nào?",
+            options: ["A. Input - Process - Rule - Output", "B. Idea - Process - Role - Output", "C. Input - Plan - Risk - Output", "D. Item - Process - Rule - Option"],
+            ans: 0
+        },
+        {
+            q: "Câu 6: Khi AI phát hiện một 'Outlier' (ví dụ: chi phí miền Trung tăng đột biến 32%), bước tiếp theo cần làm theo quy trình chuẩn là gì?",
+            options: ["A. Báo cáo ngay cho Giám đốc.", "B. Trừ tiền công nợ của đối tác.", "C. Kiểm tra và xác minh nguyên nhân (Verify) dựa trên bảng giá/phụ phí.", "D. Xóa dòng dữ liệu đó đi."],
+            ans: 2
+        },
+        {
+            q: "Câu 7: Công thức nào sau đây được dùng để lượng hóa Tác động tài chính (Impact Analysis) của một điểm bất thường?",
+            options: ["A. Chênh lệch đơn giá / Số đơn", "B. Chênh lệch đơn giá + Số đơn", "C. Chênh lệch đơn giá x Số đơn", "D. Tổng đơn giá x Số đơn"],
+            ans: 2
+        },
+        {
+            q: "Câu 8: Trong mô hình 3 thành phần cấu trúc nên một trợ lý số AI, 'Claude Project' đóng vai trò là gì?",
+            options: ["A. Bộ não số chứa Kho kiến thức (Knowledge/SOP/Quy định)", "B. Quy trình xử lý từng bước (Process)", "C. Sản phẩm đầu ra (Output/Artifact)", "D. Hệ thống gửi email tự động (Auto-sender)"],
+            ans: 0
+        },
+        {
+            q: "Câu 9: Workflow AI 4 bước chuẩn để biến dữ liệu thành kết quả là gì?",
+            options: ["A. Tải file -> Đọc file -> Tóm tắt -> Lưu trữ", "B. Thu thập -> Phân tích -> Kiểm tra -> Xuất kết quả", "C. Tìm kiếm -> Lọc dữ liệu -> Gửi email -> Xóa file", "D. Nhập liệu -> Chạy AI -> Xóa lỗi -> Báo cáo"],
+            ans: 1
+        },
+        {
+            q: "Câu 10: Khái niệm 'Human-in-the-loop' trong việc ứng dụng AI vào phòng ban mang ý nghĩa gì?",
+            options: ["A. Con người phải nhập liệu thủ công toàn bộ.", "B. AI tự động 100%, con người không cần can thiệp.", "C. AI xử lý, tính toán, tạo nội dung; Con người kiểm tra, phê duyệt và chịu trách nhiệm cuối cùng.", "D. Con người tính toán, AI chỉ dùng để gửi email."],
+            ans: 2
+        }
+    ];
+
+    // ==========================================
+    // 3. LOGIC XỬ LÝ GIAO DIỆN & LƯU ĐIỂM
+    // ==========================================
+    let studentName = "";
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+        const nameInput = document.getElementById('student-name').value.trim();
+        if(nameInput === "") {
+            alert("Vui lòng nhập họ tên của bạn trước khi bắt đầu!");
+            return;
+        }
+        studentName = nameInput;
+        document.getElementById('intro-container').style.display = 'none';
+        document.getElementById('quiz-container').style.display = 'block';
+        renderQuestions();
+    });
+
+    function renderQuestions() {
+        const list = document.getElementById('questions-list');
+        questions.forEach((item, index) => {
+            let html = `<div class="question">
+                            <h3>${item.q}</h3>`;
+            item.options.forEach((opt, optIndex) => {
+                html += `<label class="option">
+                            <input type="radio" name="q${index}" value="${optIndex}" required>
+                            ${opt}
+                         </label>`;
+            });
+            html += `</div>`;
+            list.innerHTML += html;
+        });
+    }
+
+    document.getElementById('quiz-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Tính điểm
+        let score = 0;
+        let answeredAll = true;
+
+        questions.forEach((item, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            if(!selected) {
+                answeredAll = false;
+            } else if (parseInt(selected.value) === item.ans) {
+                score += 1;
+            }
+        });
+
+        if(!answeredAll) {
+            alert("Vui lòng trả lời đầy đủ các câu hỏi!");
+            return;
+        }
+
+        const finalScore = score + "/10";
+        
+        // Cập nhật giao diện
+        document.getElementById('submit-btn').disabled = true;
+        document.getElementById('loading-msg').style.display = 'block';
+
+        // Gửi dữ liệu lên Google Sheets
+        if (GOOGLE_APP_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbzUax26pILxLuF-TZy1YAvmfHDdYo2K4Zm7ACD92_UEH5SUbXynsnEEidHBuMsrEUa-HQ/exec") {
+            // Nếu người dùng chưa cài đặt URL, chỉ show điểm
+            showResult(studentName, finalScore);
+            alert("Lưu ý: Bạn chưa cấu hình Google Sheets URL nên điểm số chỉ hiển thị, chưa được lưu.");
+        } else {
+            // Dùng fetch API gửi dữ liệu POST dạng form URL encoded
+            fetch(GOOGLE_APP_SCRIPT_URL, {
+                method: "POST",
+                body: new URLSearchParams({
+                    "name": studentName,
+                    "score": finalScore
+                })
+            })
+            .then(res => res.text())
+            .then(data => {
+                showResult(studentName, finalScore);
+            })
+            .catch(error => {
+                alert("Có lỗi xảy ra khi lưu kết quả: " + error);
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('loading-msg').style.display = 'none';
+            });
+        }
+    });
+
+    function showResult(name, score) {
+        document.getElementById('quiz-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+        document.getElementById('display-name').innerText = name;
+        document.getElementById('display-score').innerText = score;
+    }
+</script>
+
+</body>
+</html>
