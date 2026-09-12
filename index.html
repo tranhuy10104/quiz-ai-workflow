@@ -1,758 +1,1515 @@
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Bài Kiểm Tra Khóa Đào Tạo AI Claude</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+
         :root {
+
             --primary-color: #E52328; /* Đỏ thương hiệu J&T */
+
             --primary-hover: #C21A20;
+
             --bg-color-start: #F5F6F8;
+
             --bg-color-end: #E5E7EB;
+
             --text-main: #2D3748;
+
             --text-muted: #718096;
+
             --border-color: #E2E8F0;
+
             --card-bg: #FFFFFF;
+
             --success-color: #10B981;
+
             --success-bg: #ECFDF5;
+
             --error-color: #EF4444;
+
             --error-bg: #FEF2F2;
+
             --info-bg: #EFF6FF;
+
             --info-border: #BFDBFE;
+
             --info-text: #1E40AF;
+
         }
+
+
 
         body { 
+
             font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+
             background: linear-gradient(135deg, var(--bg-color-start) 0%, var(--bg-color-end) 100%);
+
             min-height: 100vh;
+
             color: var(--text-main); 
+
             line-height: 1.6; 
+
             margin: 0; 
+
             padding: 30px 15px; 
+
             background-attachment: fixed;
+
         }
+
+
 
         .container { 
+
             max-width: 820px; 
+
             margin: 0 auto; 
+
             background: var(--card-bg); 
+
             padding: 35px; 
+
             border-radius: 12px; 
+
             box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+
             border-top: 6px solid var(--primary-color);
+
         }
+
+
 
         h1, h2, h3 { 
+
             color: #1A202C; 
+
             font-weight: 700;
+
         }
+
+
 
         .header-box { 
+
             text-align: center; 
+
             margin-bottom: 30px; 
+
         }
+
+
 
         .header-box h1 {
+
             font-size: 26px;
+
             margin-bottom: 8px;
+
             color: var(--primary-color);
+
         }
+
+
 
         .header-box p {
+
             color: var(--text-muted);
+
             font-size: 15px;
+
             margin-top: 0;
+
         }
+
+
 
         .form-group { 
+
             margin-bottom: 25px; 
+
         }
+
+
 
         label { 
+
             display: block; 
+
             font-weight: 600; 
+
             margin-bottom: 8px; 
+
             color: var(--text-main);
+
         }
+
+
 
         input[type="text"] { 
+
             width: 100%; 
+
             padding: 14px 16px; 
+
             border: 1.5px solid var(--border-color); 
+
             border-radius: 8px; 
+
             box-sizing: border-box; 
+
             font-size: 15px; 
+
             transition: all 0.25s ease;
+
             font-family: inherit;
+
         }
+
+
 
         input[type="text"]:focus {
+
             outline: none;
+
             border-color: var(--primary-color);
+
             box-shadow: 0 0 0 3px rgba(229, 35, 40, 0.15);
+
         }
+
+
 
         button { 
+
             display: block; 
+
             width: 100%; 
+
             padding: 14px; 
+
             background: var(--primary-color); 
+
             color: #fff; 
+
             border: none; 
+
             border-radius: 8px; 
+
             font-size: 16px; 
+
             font-weight: 700; 
+
             text-transform: uppercase; 
+
             letter-spacing: 0.5px; 
+
             cursor: pointer; 
+
             transition: background 0.3s, transform 0.1s; 
+
         }
+
+
 
         button:hover { 
+
             background: var(--primary-hover); 
+
         }
+
+
 
         button:active {
+
             transform: translateY(1px);
+
         }
+
+
 
         button:disabled { 
+
             background: #CBD5E1; 
+
             cursor: not-allowed; 
+
             transform: none;
+
         }
+
+
 
         .question { 
+
             margin-bottom: 25px; 
+
             padding: 20px; 
+
             background: #F8FAFC; 
+
             border-radius: 10px;
+
             border: 1px solid var(--border-color);
+
         }
+
+
 
         .question h3 { 
+
             margin-top: 0; 
+
             margin-bottom: 16px; 
+
             font-size: 16px; 
+
             color: #1E293B; 
+
             font-weight: 600;
+
         }
+
+
 
         .option { 
+
             display: flex; 
+
             align-items: center; 
+
             margin-bottom: 10px; 
+
             padding: 12px 16px; 
+
             background: var(--card-bg); 
+
             border: 1px solid var(--border-color); 
+
             border-radius: 8px; 
+
             cursor: pointer; 
+
             transition: all 0.2s ease; 
+
             font-weight: 400;
+
             font-size: 15px;
+
         }
+
+
 
         .option:hover { 
+
             border-color: var(--primary-color); 
+
             background: #FFF5F5; 
+
         }
+
+
 
         .option:has(input:checked) {
+
             border-color: var(--primary-color);
+
             background: #FFF0F0;
+
             box-shadow: 0 0 0 1px var(--primary-color);
+
         }
+
+
 
         .option input { 
+
             margin-right: 12px; 
+
             width: 18px; 
+
             height: 18px; 
+
             accent-color: var(--primary-color); 
+
             cursor: pointer;
+
         }
+
+
 
         #quiz-container, #result-container { 
+
             display: none; 
+
         }
+
+
 
         .result-box { 
+
             text-align: center; 
+
             padding: 30px 20px; 
+
             background: #FFF5F5; 
+
             border-radius: 12px; 
+
             border: 2px dashed var(--primary-color); 
+
             margin-bottom: 30px;
+
         }
+
+
 
         .result-box h2 { 
+
             color: var(--primary-color); 
+
             font-size: 28px; 
+
             margin-bottom: 10px; 
+
             margin-top: 0;
+
         }
+
+
 
         .result-box p { 
+
             font-size: 16px; 
+
             color: var(--text-main); 
+
             margin: 8px 0;
+
         }
+
+
 
         .score-highlight {
+
             font-size: 40px !important;
+
             font-weight: 800;
+
             color: var(--primary-color);
+
             display: block;
+
             margin: 10px 0;
+
         }
+
+
 
         .review-section {
+
             margin-top: 30px;
+
             text-align: left;
+
         }
+
+
 
         .review-header {
+
             font-size: 20px;
+
             font-weight: 700;
+
             margin-bottom: 20px;
+
             padding-bottom: 10px;
+
             border-bottom: 2px solid var(--border-color);
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
         }
+
+
 
         .review-card {
+
             background: #FFFFFF;
+
             border-radius: 10px;
+
             padding: 20px;
+
             margin-bottom: 20px;
+
             border: 1px solid var(--border-color);
+
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+
         }
+
+
 
         .review-card.correct {
+
             border-left: 5px solid var(--success-color);
+
         }
+
+
 
         .review-card.wrong {
+
             border-left: 5px solid var(--error-color);
+
         }
+
+
 
         .review-badge {
+
             display: inline-block;
+
             padding: 3px 10px;
+
             border-radius: 20px;
+
             font-size: 13px;
+
             font-weight: 600;
+
             margin-bottom: 10px;
+
         }
+
+
 
         .review-badge.correct {
+
             background: var(--success-bg);
+
             color: var(--success-color);
+
         }
+
+
 
         .review-badge.wrong {
+
             background: var(--error-bg);
+
             color: var(--error-color);
+
         }
+
+
 
         .review-question-title {
+
             font-weight: 600;
+
             font-size: 16px;
+
             margin-bottom: 12px;
+
             color: #1E293B;
+
         }
+
+
 
         .review-ans-item {
+
             padding: 8px 12px;
+
             border-radius: 6px;
+
             margin-bottom: 6px;
+
             font-size: 14.5px;
+
             display: flex;
+
             align-items: center;
+
         }
+
+
 
         .ans-user-wrong {
+
             background-color: var(--error-bg);
+
             color: #B91C1C;
+
             border: 1px solid #FECACA;
+
         }
+
+
 
         .ans-correct {
+
             background-color: var(--success-bg);
+
             color: #047857;
+
             font-weight: 600;
+
             border: 1px solid #A7F3D0;
+
         }
+
+
 
         .explanation-box {
+
             margin-top: 14px;
+
             padding: 14px 16px;
+
             background-color: var(--info-bg);
+
             border-left: 4px solid #3B82F6;
+
             border-radius: 6px;
+
             font-size: 14px;
+
             color: #1E3A8A;
+
             line-height: 1.55;
+
         }
+
+
 
         .explanation-box strong {
+
             display: block;
+
             margin-bottom: 4px;
+
             color: #1D4ED8;
+
         }
+
+
 
         .loading { 
+
             text-align: center; 
+
             font-weight: 500; 
+
             color: var(--primary-color); 
+
             display: none; 
+
             margin-top: 15px; 
+
             animation: pulse 1.5s infinite;
+
         }
+
+
 
         @keyframes pulse {
+
             0% { opacity: 0.6; }
+
             50% { opacity: 1; }
+
             100% { opacity: 0.6; }
+
         }
+
+
 
         .message-overlay {
+
             position: fixed;
+
             top: 0;
+
             left: 0;
+
             width: 100%;
+
             height: 100%;
+
             background: rgba(0, 0, 0, 0.5);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             z-index: 1000;
+
             opacity: 0;
+
             pointer-events: none;
+
             transition: opacity 0.3s ease;
+
         }
+
+
 
         .message-overlay.active {
+
             opacity: 1;
+
             pointer-events: auto;
+
         }
+
+
 
         .message-box {
+
             background: white;
+
             padding: 24px;
+
             border-radius: 10px;
+
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
             max-width: 420px;
+
             width: 90%;
+
             text-align: center;
+
             transform: translateY(-20px);
+
             transition: transform 0.3s ease;
+
             border-top: 4px solid var(--primary-color);
+
         }
+
+
 
         .message-overlay.active .message-box {
+
             transform: translateY(0);
+
         }
+
+
 
         .message-text {
+
             margin-bottom: 20px;
+
             font-size: 15.5px;
+
             color: var(--text-main);
+
         }
+
+
 
         .message-btn {
+
             background: var(--primary-color);
+
             color: white;
+
             border: none;
+
             padding: 10px 24px;
+
             border-radius: 6px;
+
             cursor: pointer;
+
             font-weight: 600;
+
             width: auto;
+
             display: inline-block;
+
         }
+
+
 
         .action-buttons {
+
             display: flex;
+
             gap: 15px;
+
             margin-top: 25px;
+
         }
+
+
 
         .secondary-btn {
+
             background: #64748B;
+
         }
+
+
 
         .secondary-btn:hover {
+
             background: #475569;
+
         }
+
+
 
         @media (max-width: 600px) {
+
             .container { padding: 20px 15px; }
+
             body { padding: 15px 8px; }
+
             .header-box h1 { font-size: 22px; }
+
             .score-highlight { font-size: 32px !important; }
+
             .action-buttons { flex-direction: column; }
+
         }
+
     </style>
+
 </head>
+
 <body>
 
+
+
 <div class="container">
+
     <!-- Phần 1: Nhập thông tin -->
+
     <div id="intro-container">
+
         <div class="header-box">
+
             <h1>Khóa Đào Tạo AI Claude</h1>
+
         </div>
+
         <div class="form-group">
+
             <label for="student-name">Họ và Tên học viên:</label>
+
             <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="off" required>
+
         </div>
+
         <button id="start-btn">Bắt Đầu Làm Bài</button>
+
     </div>
+
+
 
     <!-- Phần 2: Nội dung câu hỏi trắc nghiệm -->
+
     <div id="quiz-container">
+
         <div class="header-box">
+
             <h2>Phần Trắc Nghiệm</h2>
+
         </div>
+
         <form id="quiz-form">
+
             <div id="questions-list"></div>
+
             <button type="submit" id="submit-btn">Nộp Bài & Xem Điểm</button>
+
             <div class="loading" id="loading-msg">Đang đồng bộ kết quả lên hệ thống... Vui lòng đợi!</div>
+
         </form>
+
     </div>
+
+
 
     <!-- Phần 3: Kết quả và Xem lại đáp án -->
+
     <div id="result-container">
+
         <div class="result-box">
+
             <h2>HOÀN THÀNH BÀI KIỂM TRA!</h2>
+
             <p>Học viên: <strong id="display-name"></strong></p>
+
             <p>Điểm số của bạn:</p>
+
             <span class="score-highlight" id="display-score"></span>
+
             <p id="evaluation-text" style="font-weight: 500;"></p>
+
             <p style="margin-top: 15px; font-size: 13.5px; color: var(--text-muted);">Kết quả đã được lưu trữ an toàn trên Google Sheets.</p>
+
         </div>
+
+
 
         <!-- Khu vực hiển thị chi tiết câu trả lời & giải thích -->
+
         <div class="review-section">
+
             <div class="review-header">
+
                 <span>📋 Đáp Án & Giải Thích Chi Tiết</span>
+
             </div>
+
             <div id="review-list"></div>
+
         </div>
+
+
 
         <div class="action-buttons">
+
             <button type="button" class="secondary-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">Lên Đầu Trang</button>
+
             <button type="button" id="restart-btn">Làm Lại Bài</button>
+
         </div>
+
     </div>
+
 </div>
+
+
 
 <!-- Modal thông báo tùy chỉnh thay cho alert() -->
+
 <div class="message-overlay" id="messageOverlay">
+
     <div class="message-box">
+
         <div class="message-text" id="messageText"></div>
+
         <button class="message-btn" id="messageBtn">Đồng ý</button>
+
     </div>
+
 </div>
 
+
+
 <script>
+
     const GOOGLE_APP_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7vSh91q8Wk4HlMYPRX_eH53u_ICU93537pMHX_opRMnMiU-vlUKmxdB7MfcOFo7f2qA/exec"; 
 
+
+
     // Bộ 10 câu hỏi lý thuyết kèm đáp án và lời giải chi tiết theo chương trình đào tạo
+
     const questions = [
+
         {
+
             q: "Câu 1: Theo mô hình Contextual Prompting, cấu trúc R-G-I-O là viết tắt của những từ nào?",
+
             options: [
+
                 "A. Role - Goal - Input - Output", 
+
                 "B. Rule - Goal - Idea - Output", 
+
                 "C. Role - Guide - Input - Option", 
+
                 "D. Rule - Guide - Input - Output"
+
             ],
+
             ans: 0,
+
             explanation: "Cấu trúc R-G-I-O chuẩn gồm: Role (Vai trò của AI) - Goal (Mục tiêu/Nhiệm vụ cụ thể) - Input (Dữ liệu đầu vào kèm ngữ cảnh) - Output (Quy định định dạng và tiêu chuẩn kết quả)."
+
         },
+
         {
+
             q: "Câu 2: Trong tư duy phân tích dữ liệu, khái niệm 'Inference' được hiểu là gì?",
+
             options: [
+
                 "A. Sự thật hiển nhiên từ dữ liệu.", 
+
                 "B. Giả thuyết hoặc suy luận dựa trên dữ liệu.", 
+
                 "C. Quyết định hành động cuối cùng.", 
+
                 "D. Lỗi do hệ thống AI tạo ra."
+
             ],
+
             ans: 1,
+
             explanation: "Trong phân tích dữ liệu: Fact là dữ kiện/sự thật thực tế, còn Inference là các giả thuyết, kết luận suy diễn logic rút ra từ những dữ kiện đó để chuẩn bị cho bước Action (Hành động)."
+
         },
+
         {
+
             q: "Câu 3: Đâu là 3 cấp độ khai thác tài liệu (Document Intelligence) khi ứng dụng AI?",
+
             options: [
+
                 "A. Đọc (Read) - Hiểu (Understand) - Viết (Write)", 
+
                 "B. Tóm tắt (Summary) - Trích xuất (Extraction) - Phân tích (Analysis)", 
+
                 "C. Tìm kiếm (Search) - Lọc (Filter) - Gộp (Merge)", 
+
                 "D. Dịch (Translate) - Tóm tắt (Summary) - Trình bày (Present)"
+
             ],
+
             ans: 1,
+
             explanation: "3 cấp độ khai thác tài liệu thông minh gồm: 1. Summary (Tóm lược nội dung chính) -> 2. Extraction (Trích xuất các thực thể, điều khoản, dữ liệu cụ thể) -> 3. Analysis (So sánh đối chiếu, phát hiện rủi ro và rút ra insight)."
+
         },
+
         {
-            q: "Câu 4: Framework đánh giá hợp đồng toàn diện bao gồm 4 yếu tố cốt lõi nào?",
+
+            q: "Câu 4: Chức năng 'Project' trong Claude đóng vai trò cốt lõi gì khi xây dựng AI Workflow?",
+
             options: [
-                "A. Cost, Risk, Cashflow, Liability", 
-                "B. Cost, Time, Cashflow, Quality", 
-                "C. Price, Speed, Risk, Legal", 
-                "D. Price, Margin, Cashflow, Liability"
+
+                "A. Hoạt động như một 'Bộ nhớ tri thức' (Knowledge Base) chứa tài liệu và chỉ dẫn chuyên biệt cho dự án.", 
+
+                "B. Tự động tìm kiếm và thu thập dữ liệu từ Internet theo thời gian thực.", 
+
+                "C. Thay thế hoàn toàn người dùng trong việc kiểm duyệt và ra quyết định.", 
+
+                "D. Kết nối trực tiếp với các hệ thống ERP của doanh nghiệp mà không cần API."
+
             ],
+
             ans: 0,
-            explanation: "Bộ khung 4 trụ cột rà soát hợp đồng thương mại chuẩn: Cost (Chi phí phát sinh/ẩn) - Risk (Rủi ro thực thi/bất khả kháng) - Cashflow (Dòng tiền & điều kiện thanh toán) - Liability (Trách nhiệm pháp lý & bồi thường vi phạm)."
+
+            explanation: "Chức năng Project giúp người dùng tạo một không gian làm việc riêng, tải lên tài liệu nền (SOP, quy định) và cài đặt Custom Instructions để định hướng bối cảnh. Việc này giúp Claude phản hồi chính xác và nhất quán theo đúng nghiệp vụ của tổ chức."
+
         },
+
         {
+
             q: "Câu 5: Trong việc xây dựng AI Workflow, 'Custom Skill' được định nghĩa là gì?",
+
             options: [
+
                 "A. Một câu lệnh (prompt) đơn giản dùng một lần.", 
+
                 "B. Một quy trình được chuẩn hóa sẵn để tái sử dụng nhiều lần.", 
+
                 "C. Một phần mềm quản lý cơ sở dữ liệu.", 
+
                 "D. Một công cụ vẽ biểu đồ tự động."
+
             ],
+
             ans: 1,
+
             explanation: "Custom Skill là phương pháp đóng gói một quy trình nghiệp vụ nhiều bước thành chuỗi chỉ dẫn chuẩn, cho phép bất kỳ ai đưa dữ liệu vào cũng nhận được kết quả đồng nhất và có thể tái sử dụng lâu dài."
+
         },
+
         {
+
             q: "Câu 6: Cấu trúc tiêu chuẩn để đóng gói một Custom Skill (I-P-R-O) bao gồm các thành phần nào?",
+
             options: [
+
                 "A. Input - Process - Rule - Output", 
+
                 "B. Idea - Process - Role - Output", 
+
                 "C. Input - Plan - Risk - Output", 
+
                 "D. Item - Process - Rule - Option"
+
             ],
+
             ans: 0,
+
             explanation: "Đóng gói Custom Skill tuân thủ khung I-P-R-O: Input (Dữ liệu đầu vào hợp lệ) - Process (Các bước xử lý tuần tự) - Rule (Bộ quy tắc/ràng buộc chất lượng) - Output (Mẫu định dạng đầu ra bắt buộc)."
+
         },
+
         {
-            q: "Câu 7: Theo quy trình phân tích điểm bất thường (Outlier), 3 bước chuẩn cần thực hiện là gì?",
+
+            q: "Câu 7: Để tạo mới hoặc chỉnh sửa chuẩn hóa một 'Custom Skill', chúng ta thường sử dụng công cụ hoặc thao tác nào sau đây?",
+
             options: [
-                "A. Detect (Phát hiện) -> Verify (Xác minh) -> Explain (Giải thích)", 
-                "B. Detect (Phát hiện) -> Delete (Xóa bỏ) -> Report (Báo cáo)", 
-                "C. Find (Tìm kiếm) -> Guess (Phỏng đoán) -> Conclude (Kết luận)", 
-                "D. Ignore (Bỏ qua) -> Verify (Xác minh) -> Explain (Giải thích)"
+
+                "A. Sử dụng kỹ năng tóm tắt dữ liệu (Summary) thông thường.", 
+
+                "B. Gõ lệnh yêu cầu AI tự động lập trình bằng Python.", 
+
+                "C. Sử dụng một 'Skill đóng gói Skill' (Meta-Skill / Prompt Generator) chuyên dụng.", 
+
+                "D. Trích xuất toàn bộ dữ liệu ra Excel để chỉnh sửa thủ công."
+
             ],
-            ans: 0,
-            explanation: "Quy trình xử lý Outlier chuyên nghiệp: 1. Detect (Dùng thuật toán/Claude phát hiện số liệu lệch chuẩn) -> 2. Verify (Kiểm tra chéo xem là lỗi nhập liệu hay biến động thực tế) -> 3. Explain (Tìm nguyên nhân gốc rễ và đề xuất giải pháp)."
-        },
-        {
-            q: "Câu 8: Mô hình 3 thành phần cốt lõi để tạo nên một trợ lý số có cấu trúc bao gồm những gì?",
-            options: [
-                "A. Data, Hardware, Software", 
-                "B. Project (Knowledge), Skill (Process), Artifact (Output)", 
-                "C. Input, AI Model, Output", 
-                "D. Prompt, Context, Chatbot"
-            ],
-            ans: 1,
-            explanation: "Công thức AI Agent hoàn chỉnh cho phòng ban: Project đóng vai trò 'Bộ nhớ tri thức' (SOP, tài liệu), Skill đóng vai trò 'Kỹ năng quy trình' (cách xử lý), và Artifact đóng vai trò 'Đầu ra trực quan' (báo cáo, dashboard)."
-        },
-        {
-            q: "Câu 9: Quy trình chuẩn 4 bước (xương sống) của một AI Workflow là gì?",
-            options: [
-                "A. Tải file -> Đọc file -> Tóm tắt -> Lưu trữ", 
-                "B. Thu thập -> Phân tích -> Kiểm tra -> Xuất kết quả", 
-                "C. Tìm kiếm -> Lọc dữ liệu -> Gửi email -> Xóa file", 
-                "D. Nhập liệu -> Chạy AI -> Xóa lỗi -> Báo cáo"
-            ],
-            ans: 1,
-            explanation: "Một AI Workflow chuẩn hóa khép kín gồm: 1. Thu thập dữ liệu (Data Ingestion) -> 2. Phân tích/Tạo nội dung (Reasoning) -> 3. Kiểm tra chéo theo tiêu chuẩn (Review/Self-refine) -> 4. Xuất bản kết quả (Artifact Delivery)."
-        },
-        {
-            q: "Câu 10: Nguyên tắc 'Human-in-the-loop' trong vận hành AI Workflow nhấn mạnh điều gì?",
-            options: [
-                "A. AI không thể tự động hóa bất kỳ công việc nào.", 
-                "B. Con người phải nhập liệu thủ công toàn bộ dữ liệu.", 
-                "C. AI xử lý và phân tích, nhưng con người là người kiểm tra, phê duyệt và ra quyết định.", 
-                "D. Con người tính toán thủ công, AI chỉ dùng để trình bày báo cáo."
-            ],
+
             ans: 2,
+
+            explanation: "Để tạo hoặc tối ưu hóa một Custom Skill (tuân thủ cấu trúc I-P-R-O), cách hiệu quả nhất là sử dụng một 'Skill đóng gói Skill' (Meta-Skill). Skill này sẽ đóng vai trò như một chuyên gia thiết kế, giúp bạn định hình cấu trúc, luật lệ và quy định đầu ra chuẩn xác nhất để AI dễ dàng thực thi."
+
+        },
+
+        {
+
+            q: "Câu 8: Mô hình 3 thành phần cốt lõi để tạo nên một trợ lý số có cấu trúc bao gồm những gì?",
+
+            options: [
+
+                "A. Data, Hardware, Software", 
+
+                "B. Project (Knowledge), Skill (Process), Artifact (Output)", 
+
+                "C. Input, AI Model, Output", 
+
+                "D. Prompt, Context, Chatbot"
+
+            ],
+
+            ans: 1,
+
+            explanation: "Công thức AI Agent hoàn chỉnh cho phòng ban: Project đóng vai trò 'Bộ nhớ tri thức' (SOP, tài liệu), Skill đóng vai trò 'Kỹ năng quy trình' (cách xử lý), và Artifact đóng vai trò 'Đầu ra trực quan' (báo cáo, dashboard)."
+
+        },
+
+        {
+
+            q: "Câu 9: Quy trình chuẩn 4 bước (xương sống) của một AI Workflow là gì?",
+
+            options: [
+
+                "A. Tải file -> Đọc file -> Tóm tắt -> Lưu trữ", 
+
+                "B. Thu thập -> Phân tích -> Kiểm tra -> Xuất kết quả", 
+
+                "C. Tìm kiếm -> Lọc dữ liệu -> Gửi email -> Xóa file", 
+
+                "D. Nhập liệu -> Chạy AI -> Xóa lỗi -> Báo cáo"
+
+            ],
+
+            ans: 1,
+
+            explanation: "Một AI Workflow chuẩn hóa khép kín gồm: 1. Thu thập dữ liệu (Data Ingestion) -> 2. Phân tích/Tạo nội dung (Reasoning) -> 3. Kiểm tra chéo theo tiêu chuẩn (Review/Self-refine) -> 4. Xuất bản kết quả (Artifact Delivery)."
+
+        },
+
+        {
+
+            q: "Câu 10: Nguyên tắc 'Human-in-the-loop' trong vận hành AI Workflow nhấn mạnh điều gì?",
+
+            options: [
+
+                "A. AI không thể tự động hóa bất kỳ công việc nào.", 
+
+                "B. Con người phải nhập liệu thủ công toàn bộ dữ liệu.", 
+
+                "C. AI xử lý và phân tích, nhưng con người là người kiểm tra, phê duyệt và ra quyết định.", 
+
+                "D. Con người tính toán thủ công, AI chỉ dùng để trình bày báo cáo."
+
+            ],
+
+            ans: 2,
+
             explanation: "Human-in-the-loop là nguyên tắc vàng trong AI doanh nghiệp: AI đảm nhận việc tính toán, tổng hợp và đề xuất; con người giữ vai trò kiểm duyệt chất lượng, chịu trách nhiệm pháp lý và ra quyết định chiến lược."
+
         }
+
     ];
 
+
+
     function showMessage(message) {
+
         document.getElementById('messageText').innerText = message;
+
         document.getElementById('messageOverlay').classList.add('active');
+
     }
+
+
 
     document.getElementById('messageBtn').addEventListener('click', () => {
+
         document.getElementById('messageOverlay').classList.remove('active');
+
     });
+
+
 
     let studentName = "";
+
     let userAnswers = {};
 
+
+
     document.getElementById('start-btn').addEventListener('click', () => {
+
         const nameInput = document.getElementById('student-name').value.trim();
+
         if(nameInput === "") {
+
             showMessage("Vui lòng nhập họ tên của bạn trước khi bắt đầu bài thi!");
+
             return;
+
         }
+
         studentName = nameInput;
+
         document.getElementById('intro-container').style.display = 'none';
+
         document.getElementById('quiz-container').style.display = 'block';
+
         renderQuestions();
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
     });
 
+
+
     function renderQuestions() {
+
         const list = document.getElementById('questions-list');
+
         list.innerHTML = "";
+
         questions.forEach((item, index) => {
+
             let html = `
+
                 <div class="question" id="q-block-${index}">
+
                     <h3>${item.q}</h3>`;
+
             item.options.forEach((opt, optIndex) => {
+
                 html += `
+
                     <label class="option">
+
                         <input type="radio" name="q${index}" value="${optIndex}" required>
+
                         <span>${opt}</span>
+
                     </label>`;
+
             });
+
             html += `</div>`;
+
             list.innerHTML += html;
+
         });
+
     }
 
+
+
     document.getElementById('quiz-form').addEventListener('submit', function(e) {
+
         e.preventDefault();
 
+
+
         let score = 0;
+
         let answeredAll = true;
+
         userAnswers = {};
 
+
+
         questions.forEach((item, index) => {
+
             const selected = document.querySelector(`input[name="q${index}"]:checked`);
+
             if(!selected) {
+
                 answeredAll = false;
+
             } else {
+
                 const chosen = parseInt(selected.value);
+
                 userAnswers[index] = chosen;
+
                 if (chosen === item.ans) {
+
                     score += 1;
+
                 }
+
             }
+
         });
 
+
+
         if(!answeredAll) {
+
             showMessage("Vui lòng trả lời đầy đủ tất cả 10 câu hỏi trước khi nộp bài!");
+
             return;
+
         }
+
+
 
         const finalScore = score + "/10";
 
+
+
         // Khóa nút và hiện thông báo tải
+
         document.getElementById('submit-btn').disabled = true;
+
         document.getElementById('loading-msg').style.display = 'block';
 
+
+
         // Gửi kết quả lên Google App Script
+
         fetch(GOOGLE_APP_SCRIPT_URL, {
+
             method: "POST",
+
             body: new URLSearchParams({
+
                 "name": studentName,
+
                 "score": finalScore
+
             })
+
         })
+
         .then(res => res.text())
+
         .then(data => {
+
             showResult(studentName, score, finalScore);
+
         })
+
         .catch(error => {
+
             // Dù có lỗi mạng vẫn hiển thị kết quả cho học viên xem đáp án
+
             console.error("Sheet error:", error);
+
             showResult(studentName, score, finalScore);
+
         });
+
     });
+
+
 
     function showResult(name, scoreNum, finalScoreText) {
+
         document.getElementById('quiz-container').style.display = 'none';
+
         document.getElementById('result-container').style.display = 'block';
+
         document.getElementById('display-name').innerText = name;
+
         document.getElementById('display-score').innerText = finalScoreText;
 
+
+
         // Đánh giá dựa trên số điểm
+
         const evalElem = document.getElementById('evaluation-text');
+
         if (scoreNum >= 9) {
+
             evalElem.innerText = "🌟 Xuất sắc! Bạn đã nắm vững toàn bộ kiến thức về Claude AI Workflow.";
+
             evalElem.style.color = "#059669";
+
         } else if (scoreNum >= 7) {
+
             evalElem.innerText = "👍 Khá tốt! Bạn đã nắm được các nguyên tắc nền tảng quan trọng.";
+
             evalElem.style.color = "#2563EB";
+
         } else {
+
             evalElem.innerText = "💡 Hãy xem lại phần giải thích chi tiết bên dưới để bổ sung kiến thức nhé!";
+
             evalElem.style.color = "#D97706";
+
         }
 
+
+
         renderReviewSection();
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
     }
+
+
 
     function renderReviewSection() {
+
         const reviewContainer = document.getElementById('review-list');
+
         reviewContainer.innerHTML = "";
 
+
+
         questions.forEach((item, index) => {
+
             const userChoice = userAnswers[index];
+
             const isCorrect = (userChoice === item.ans);
 
+
+
             let reviewHtml = `
+
                 <div class="review-card ${isCorrect ? 'correct' : 'wrong'}">
+
                     <span class="review-badge ${isCorrect ? 'correct' : 'wrong'}">
+
                         ${isCorrect ? '✓ Trả lời chính xác' : '✗ Chưa chính xác'}
+
                     </span>
+
                     <div class="review-question-title">${item.q}</div>
+
                     
+
                     <div style="margin-top: 10px;">
+
             `;
+
+
 
             // Hiển thị các lựa chọn liên quan
+
             if (isCorrect) {
+
                 reviewHtml += `
+
                     <div class="review-ans-item ans-correct">
+
                         ✓ Bạn chọn: ${item.options[userChoice]}
+
                     </div>
+
                 `;
+
             } else {
+
                 reviewHtml += `
+
                     <div class="review-ans-item ans-user-wrong">
+
                         ✗ Bạn đã chọn: ${userChoice !== undefined ? item.options[userChoice] : 'Chưa trả lời'}
+
                     </div>
+
                     <div class="review-ans-item ans-correct">
+
                         ✓ Đáp án đúng: ${item.options[item.ans]}
+
                     </div>
+
                 `;
+
             }
 
+
+
             // Phần giải thích chi tiết
+
             reviewHtml += `
+
                     </div>
+
                     <div class="explanation-box">
+
                         <strong>💡 Giải thích chi tiết:</strong>
+
                         ${item.explanation}
+
                     </div>
+
                 </div>
+
             `;
 
+
+
             reviewContainer.innerHTML += reviewHtml;
+
         });
+
     }
 
+
+
     document.getElementById('restart-btn').addEventListener('click', () => {
+
         document.getElementById('result-container').style.display = 'none';
+
         document.getElementById('intro-container').style.display = 'block';
+
         document.getElementById('submit-btn').disabled = false;
+
         document.getElementById('loading-msg').style.display = 'none';
+
         document.getElementById('quiz-form').reset();
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
     });
+
 </script>
+
 </body>
+
 </html>
