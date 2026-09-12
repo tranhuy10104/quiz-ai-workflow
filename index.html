@@ -3,28 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài Kiểm Tra Lý Thuyết: AI Workflow</title>
+    <title>Bài Kiểm Tra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h1, h2 { color: #2c3e50; text-align: center; }
-        .header-box { text-align: center; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; font-weight: bold; margin-bottom: 8px; }
-        input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
-        button { display: block; width: 100%; padding: 12px; background: #3498db; color: #fff; border: none; border-radius: 4px; font-size: 18px; cursor: pointer; transition: background 0.3s; }
-        button:hover { background: #2980b9; }
-        button:disabled { background: #95a5a6; cursor: not-allowed; }
-        .question { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .question h3 { margin-bottom: 15px; font-size: 16px; color: #34495e; }
-        .option { display: block; margin-bottom: 10px; padding: 10px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
-        .option:hover { background: #f1f1f1; }
-        .option input { margin-right: 10px; }
-        #quiz-container, #result-container { display: none; }
-        .result-box { text-align: center; padding: 30px; background: #e8f6f3; border-radius: 8px; border: 2px solid #1abc9c; }
-        .result-box h2 { color: #1abc9c; font-size: 28px; margin-bottom: 10px; }
-        .result-box p { font-size: 18px; }
-        .loading { text-align: center; font-style: italic; color: #7f8c8d; display: none; margin-top: 15px; }
+        :root {
+            --primary-color: #E52328; /* Đỏ phong cách J&T */
+            --primary-hover: #C21A20;
+            --bg-color-start: #F2F2F2;
+            --bg-color-end: #E0E0E0;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #E0E0E0;
+            --card-bg: #FFFFFF;
+        }
+
+        body { 
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, var(--bg-color-start) 0%, var(--bg-color-end) 100%);
+            min-height: 100vh;
+            color: var(--text-main); 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 40px 20px; 
+            background-attachment: fixed;
+        }
+
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            border-top: 6px solid var(--primary-color); /* Điểm nhấn viền trên */
+        }
+
+        h1, h2 { 
+            color: #111; 
+            text-align: center; 
+            font-weight: 700;
+        }
+
+        .header-box { 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
+        
+        .header-box h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header-box p {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-top: 0;
+        }
+
+        .form-group { 
+            margin-bottom: 25px; 
+        }
+
+        label { 
+            display: block; 
+            font-weight: 500; 
+            margin-bottom: 10px; 
+            color: var(--text-main);
+        }
+
+        input[type="text"] { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 16px; 
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(229, 35, 40, 0.15);
+        }
+
+        button { 
+            display: block; 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--primary-color); 
+            color: #fff; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 16px; 
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer; 
+            transition: background 0.3s, transform 0.1s; 
+        }
+
+        button:hover { 
+            background: var(--primary-hover); 
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled { 
+            background: #BDBDBD; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+
+        .question { 
+            margin-bottom: 35px; 
+            padding: 20px; 
+            background: #FAFAFA; 
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .question h3 { 
+            margin-top: 0;
+            margin-bottom: 20px; 
+            font-size: 17px; 
+            color: #111; 
+            font-weight: 700;
+        }
+
+        .option { 
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px; 
+            padding: 12px 16px; 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            font-weight: 400;
+        }
+
+        .option:hover { 
+            border-color: var(--primary-color); 
+            background: #FFF9F9; 
+        }
+
+        /* Tự động highlight đáp án được chọn */
+        .option:has(input:checked) {
+            border-color: var(--primary-color);
+            background: #FFF0F0;
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
+
+        .option input { 
+            margin-right: 12px; 
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color); /* Đổi màu nút radio sang đỏ */
+            cursor: pointer;
+        }
+
+        #quiz-container, #result-container { 
+            display: none; 
+        }
+
+        .result-box { 
+            text-align: center; 
+            padding: 40px 30px; 
+            background: #FFF9F9; 
+            border-radius: 8px; 
+            border: 2px dashed var(--primary-color); 
+        }
+
+        .result-box h2 { 
+            color: var(--primary-color); 
+            font-size: 32px; 
+            margin-bottom: 15px; 
+            margin-top: 0;
+        }
+
+        .result-box p { 
+            font-size: 18px; 
+            color: var(--text-main);
+            margin: 10px 0;
+        }
+
+        .score-highlight {
+            font-size: 36px !important;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin: 15px 0;
+        }
+
+        .loading { 
+            text-align: center; 
+            font-weight: 500; 
+            color: var(--primary-color); 
+            display: none; 
+            margin-top: 20px; 
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            body { padding: 20px 10px; }
+            .header-box h1 { font-size: 24px; }
+        }
+        
+        /* Message box styles */
+        .message-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .message-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .message-box {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .message-overlay.active .message-box {
+            transform: translateY(0);
+        }
+
+        .message-text {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .message-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            width: auto;
+            display: inline-block;
+        }
+
+        .message-btn:hover {
+            background: var(--primary-hover);
+        }
     </style>
 </head>
 <body>
@@ -33,11 +289,10 @@
     <!-- Phần 1: Nhập thông tin -->
     <div id="intro-container">
         <div class="header-box">
-            <h1>Bài Kiểm Tra Lý Thuyết</h1>
-            <p>Chuyên đề: Tổng quan & Xây dựng AI Workflow</p>
+            <h1>Bài Kiểm Tra</h1>
         </div>
         <div class="form-group">
-            <label for="student-name">Vui lòng nhập Họ và Tên của bạn để bắt đầu:</label>
+            <label for="student-name">Họ và Tên học viên:</label>
             <input type="text" id="student-name" placeholder="VD: Nguyễn Văn A" required>
         </div>
         <button id="start-btn">Bắt Đầu Làm Bài</button>
@@ -45,22 +300,34 @@
 
     <!-- Phần 2: Nội dung câu hỏi -->
     <div id="quiz-container">
-        <h2>Phần Trắc Nghiệm (10 Câu)</h2>
+        <div class="header-box">
+            <h2>Phần Trắc Nghiệm</h2>
+            <p>Gồm 10 câu hỏi lý thuyết</p>
+        </div>
         <form id="quiz-form">
             <div id="questions-list"></div>
             <button type="submit" id="submit-btn">Nộp Bài & Xem Điểm</button>
-            <div class="loading" id="loading-msg">Đang lưu kết quả của bạn... Vui lòng đợi!</div>
+            <div class="loading" id="loading-msg">Hệ thống đang xử lý kết quả... Vui lòng đợi!</div>
         </form>
     </div>
 
     <!-- Phần 3: Kết quả -->
     <div id="result-container">
         <div class="result-box">
-            <h2>Hoàn Thành Xuất Sắc!</h2>
-            <p>Cảm ơn <strong id="display-name"></strong> đã hoàn thành bài kiểm tra.</p>
-            <p>Điểm số của bạn là: <strong id="display-score" style="font-size: 24px; color: #e74c3c;"></strong></p>
-            <p style="margin-top: 20px; font-size: 14px; color: #7f8c8d;">Kết quả của bạn đã được ghi nhận vào hệ thống.</p>
+            <h2>HOÀN THÀNH!</h2>
+            <p>Cảm ơn học viên <strong id="display-name"></strong> đã hoàn thành bài kiểm tra.</p>
+            <p>Điểm số của bạn:</p>
+            <span class="score-highlight" id="display-score"></span>
+            <p style="margin-top: 30px; font-size: 14px; color: var(--text-muted);">Kết quả của bạn đã được ghi nhận vào hệ thống.</p>
         </div>
+    </div>
+</div>
+
+<!-- Custom Message Box HTML -->
+<div class="message-overlay" id="messageOverlay">
+    <div class="message-box">
+        <div class="message-text" id="messageText"></div>
+        <button class="message-btn" id="messageBtn">Đóng</button>
     </div>
 </div>
 
@@ -126,6 +393,16 @@
         }
     ];
 
+    // Custom message box logic (replacing alert)
+    function showMessage(message) {
+        document.getElementById('messageText').innerText = message;
+        document.getElementById('messageOverlay').classList.add('active');
+    }
+
+    document.getElementById('messageBtn').addEventListener('click', () => {
+        document.getElementById('messageOverlay').classList.remove('active');
+    });
+
     // ==========================================
     // 3. LOGIC XỬ LÝ GIAO DIỆN & LƯU ĐIỂM
     // ==========================================
@@ -134,7 +411,7 @@
     document.getElementById('start-btn').addEventListener('click', () => {
         const nameInput = document.getElementById('student-name').value.trim();
         if(nameInput === "") {
-            alert("Vui lòng nhập họ tên của bạn trước khi bắt đầu!");
+            showMessage("Vui lòng nhập họ tên của bạn trước khi bắt đầu!");
             return;
         }
         studentName = nameInput;
@@ -151,7 +428,7 @@
             item.options.forEach((opt, optIndex) => {
                 html += `<label class="option">
                             <input type="radio" name="q${index}" value="${optIndex}" required>
-                            ${opt}
+                            <span>${opt}</span>
                          </label>`;
             });
             html += `</div>`;
@@ -176,7 +453,7 @@
         });
 
         if(!answeredAll) {
-            alert("Vui lòng trả lời đầy đủ các câu hỏi!");
+            showMessage("Vui lòng trả lời đầy đủ các câu hỏi!");
             return;
         }
 
@@ -199,7 +476,7 @@
             showResult(studentName, finalScore);
         })
         .catch(error => {
-            alert("Có lỗi xảy ra khi lưu kết quả: " + error);
+            showMessage("Có lỗi xảy ra khi lưu kết quả: " + error);
             document.getElementById('submit-btn').disabled = false;
             document.getElementById('loading-msg').style.display = 'none';
         });
